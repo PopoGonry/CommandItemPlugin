@@ -1,0 +1,4 @@
+name: CommandItemPlugin
+version: '1.0-SNAPSHOT'
+main: com.popogonry.commandItemPlugin.CommandItemPlugin
+api-version: '1.21'
