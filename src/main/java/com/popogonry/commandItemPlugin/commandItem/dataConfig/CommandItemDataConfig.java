@@ -23,6 +23,7 @@ public class CommandItemDataConfig extends Config {
 
     public void removeCommandItemData(String commandItemName) {
         getConfig().set(commandItemName, null);
+        super.store();
     }
 
     @Override

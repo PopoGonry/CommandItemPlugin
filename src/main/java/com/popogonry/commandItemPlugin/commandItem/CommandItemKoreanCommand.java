@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class CommandItemCommand implements CommandExecutor {
+public class CommandItemKoreanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if(!commandSender.isOp()) return false;
@@ -20,9 +20,9 @@ public class CommandItemCommand implements CommandExecutor {
         CommandItemService commandItemService = new CommandItemService();
 
         if (strings.length == 1) {
-            if (strings[0].equalsIgnoreCase("list")) {
+            if (strings[0].equalsIgnoreCase("리스트")) {
                 commandItemService.printCommandItems(commandSender);
-            } else if (strings[0].equalsIgnoreCase("gui")) {
+            } else if (strings[0].equalsIgnoreCase("목록")) {
                 if (!(commandSender instanceof Player)) {
                     commandSender.sendMessage(Reference.prefix_error + "플레이어 전용 명령어입니다.");
                     return false;
@@ -31,7 +31,7 @@ public class CommandItemCommand implements CommandExecutor {
 
                 CommandItemGUI commandItemGUI = new CommandItemGUI();
                 commandItemGUI.openCommandItemGUI(player, 1);
-            } else if (strings[0].equalsIgnoreCase("check")) {
+            } else if (strings[0].equalsIgnoreCase("확인")) {
                 if (!(commandSender instanceof Player)) {
                     commandSender.sendMessage(Reference.prefix_error + "플레이어 전용 명령어입니다.");
                     return false;
@@ -47,26 +47,9 @@ public class CommandItemCommand implements CommandExecutor {
 
                 player.sendMessage(Reference.prefix_opMessage + commandFromItemStack + " : 입니다.");
             }
-//            else if (strings[0].equalsIgnoreCase("storeAll")) {
-//                killEffectRepository.storeKillEffectSet();
-//                killEffectRepository.storeAllKillEffects();
-//                commandSender.sendMessage(Reference.prefix_opMessage + "Store Complete.");
-//            } else if (strings[0].equalsIgnoreCase("loadAll")) {
-//                killEffectRepository.loadKillEffectSet();
-//                killEffectRepository.loadAllKillEffects();
-//                commandSender.sendMessage(Reference.prefix_opMessage + "Load Complete.");
-//
-//
-//            } else if (strings[0].equalsIgnoreCase("saveAll")) {
-//                killEffectRepository.saveKillEffectSet();
-//                killEffectRepository.saveAllKillEffects();
-//                commandSender.sendMessage(Reference.prefix_opMessage + "Save Complete.");
-//
-//            } else if (strings[0].equalsIgnoreCase("test")) {
-//            }
         }
         else if(strings.length == 2) {
-            if (strings[0].equalsIgnoreCase("create")) {
+            if (strings[0].equalsIgnoreCase("생성")) {
                 if (commandItemService.createCommandItem(new CommandItem(strings[1], "", null))) {
                     commandSender.sendMessage(Reference.prefix_opMessage + "생성 되었습니다.");
                 }
@@ -74,7 +57,7 @@ public class CommandItemCommand implements CommandExecutor {
                     commandSender.sendMessage(Reference.prefix_error + "생성 실패하였습니다.");
                 }
             }
-            else if (strings[0].equalsIgnoreCase("delete")) {
+            else if (strings[0].equalsIgnoreCase("삭제")) {
                 if (commandItemService.deleteCommandItem(strings[1])) {
                     commandSender.sendMessage(Reference.prefix_opMessage + "삭제 되었습니다.");
                 }
@@ -82,7 +65,7 @@ public class CommandItemCommand implements CommandExecutor {
                     commandSender.sendMessage(Reference.prefix_error + "삭제 실패하였습니다.");
                 }
             }
-            else if (strings[0].equalsIgnoreCase("set")) {
+            else if (strings[0].equalsIgnoreCase("설정")) {
                 if(!(commandSender instanceof Player)) {
                     commandSender.sendMessage(Reference.prefix_error + "플레이어 전용 명령어입니다.");
                     return false;
@@ -96,7 +79,13 @@ public class CommandItemCommand implements CommandExecutor {
                 ItemStack itemStack = commandItemService.applyCommandItemStack(player.getItemInHand(), strings[1]);
                 player.setItemInHand(new ItemStack(itemStack));
 
+
                 CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(strings[1]);
+                if (commandItem == null) {
+                    player.sendMessage(Reference.prefix_error + "존재하지 않는 커맨드아이템입니다.");
+                    return false;
+                }
+
                 commandItem.setItemStack(itemStack);
                 commandItemService.modifyCommandItem(strings[1], commandItem);
 
@@ -104,14 +93,17 @@ public class CommandItemCommand implements CommandExecutor {
                 player.sendMessage(Reference.prefix_opMessage + "적용 되었습니다.");
             }
         }
-        else if(strings.length >= 3 && strings[0].equalsIgnoreCase("command")) {
+        else if(strings.length >= 3 && strings[0].equalsIgnoreCase("명령어")) {
             if(!CommandItemRepository.commandItemHashMap.containsKey(strings[1])) {
+                commandSender.sendMessage(Reference.prefix_error + "존재하지 않는 커맨드아이템입니다.");
                 return false;
             }
             String cmd = String.join(" ", Arrays.copyOfRange(strings, 2, strings.length));
             CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(strings[1]);
             commandItem.setCommand(cmd);
             commandItemService.modifyCommandItem(strings[1], commandItem);
+            commandSender.sendMessage(Reference.prefix_opMessage + "적용 되었습니다.");
+
 
         }
 
