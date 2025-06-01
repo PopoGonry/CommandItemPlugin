@@ -2,10 +2,13 @@ package com.popogonry.commandItemPlugin.commandItem;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.List;
 
 public class CommandItemEvent implements Listener {
 
@@ -23,11 +26,13 @@ public class CommandItemEvent implements Listener {
 
         CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(commandItemNameFromItemStack);
 
-        if(commandItem.getCommand() == null || commandItem.getCommand().equals("")) return;
+        if(commandItem.getCommandList() == null || commandItem.getCommandList().isEmpty()) return;
 
-
-
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandItem.getCommand().replaceAll("%player%", event.getPlayer().getName()));
+        List<String> commandList = commandItem.getCommandList();
+        for (String s : commandList) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replaceAll("%player%", event.getPlayer().getName()));
+        }
         event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount() - 1);
+        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
     }
 }

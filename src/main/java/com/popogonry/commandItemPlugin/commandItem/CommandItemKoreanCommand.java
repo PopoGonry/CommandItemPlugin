@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class CommandItemKoreanCommand implements CommandExecutor {
     @Override
@@ -50,7 +51,7 @@ public class CommandItemKoreanCommand implements CommandExecutor {
         }
         else if(strings.length == 2) {
             if (strings[0].equalsIgnoreCase("생성")) {
-                if (commandItemService.createCommandItem(new CommandItem(strings[1], "", null))) {
+                if (commandItemService.createCommandItem(new CommandItem(strings[1], Collections.emptyList(), null))) {
                     commandSender.sendMessage(Reference.prefix_opMessage + "생성 되었습니다.");
                 }
                 else {
@@ -89,21 +90,41 @@ public class CommandItemKoreanCommand implements CommandExecutor {
                 commandItem.setItemStack(itemStack);
                 commandItemService.modifyCommandItem(strings[1], commandItem);
 
-
                 player.sendMessage(Reference.prefix_opMessage + "적용 되었습니다.");
             }
         }
-        else if(strings.length >= 3 && strings[0].equalsIgnoreCase("명령어")) {
+        else if(strings.length >= 3 && strings[0].equalsIgnoreCase("명령어추가")) {
             if(!CommandItemRepository.commandItemHashMap.containsKey(strings[1])) {
                 commandSender.sendMessage(Reference.prefix_error + "존재하지 않는 커맨드아이템입니다.");
                 return false;
             }
             String cmd = String.join(" ", Arrays.copyOfRange(strings, 2, strings.length));
             CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(strings[1]);
-            commandItem.setCommand(cmd);
-            commandItemService.modifyCommandItem(strings[1], commandItem);
-            commandSender.sendMessage(Reference.prefix_opMessage + "적용 되었습니다.");
 
+            if(commandItem.getCommandList().add(cmd)) {
+                commandItemService.modifyCommandItem(strings[1], commandItem);
+                commandSender.sendMessage(Reference.prefix_opMessage + "적용 되었습니다.");
+            }
+            else {
+                commandSender.sendMessage(Reference.prefix_error + "적용 실패하였습니다.");
+            }
+        }
+
+        else if(strings.length >= 3 && strings[0].equalsIgnoreCase("명령어제거")) {
+            if(!CommandItemRepository.commandItemHashMap.containsKey(strings[1])) {
+                commandSender.sendMessage(Reference.prefix_error + "존재하지 않는 커맨드아이템입니다.");
+                return false;
+            }
+            String cmd = String.join(" ", Arrays.copyOfRange(strings, 2, strings.length));
+            CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(strings[1]);
+
+            if(commandItem.getCommandList().remove(cmd)) {
+                commandItemService.modifyCommandItem(strings[1], commandItem);
+                commandSender.sendMessage(Reference.prefix_opMessage + "적용 되었습니다.");
+            }
+            else {
+                commandSender.sendMessage(Reference.prefix_error + "적용 실패하였습니다.");
+            }
 
         }
 

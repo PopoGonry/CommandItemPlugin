@@ -5,6 +5,7 @@ import com.popogonry.commandItemPlugin.commandItem.CommandItem;
 import com.popogonry.commandItemPlugin.commandItem.CommandItemRepository;
 import com.popogonry.commandItemPlugin.commandItem.CommandItemService;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,7 +49,7 @@ public class CommandItemGUIEvent implements Listener {
                 }
                 CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(commandFromItemStack);
                 player.getInventory().addItem(new ItemStack(commandItem.getItemStack()));
-
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
             }
 
             else if(48 <= slot && slot <= 50) {
@@ -58,13 +59,13 @@ public class CommandItemGUIEvent implements Listener {
                     String[] strings = itemMeta.getDisplayName().split(" ");
                     commandItemGUI.openCommandItemGUI(player, Integer.parseInt(strings[1]));
                 }
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
             }
 
             // Player Inventory
             else if(54 <= slot && slot <= 89) {
 
             }
-
 
         }
     }

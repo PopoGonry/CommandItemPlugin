@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class CommandItemCommand implements CommandExecutor {
     @Override
@@ -67,7 +68,7 @@ public class CommandItemCommand implements CommandExecutor {
         }
         else if(strings.length == 2) {
             if (strings[0].equalsIgnoreCase("create")) {
-                if (commandItemService.createCommandItem(new CommandItem(strings[1], "", null))) {
+                if (commandItemService.createCommandItem(new CommandItem(strings[1], Collections.emptyList(), null))) {
                     commandSender.sendMessage(Reference.prefix_opMessage + "생성 되었습니다.");
                 }
                 else {
@@ -110,7 +111,11 @@ public class CommandItemCommand implements CommandExecutor {
             }
             String cmd = String.join(" ", Arrays.copyOfRange(strings, 2, strings.length));
             CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(strings[1]);
-            commandItem.setCommand(cmd);
+
+            commandItem.getCommandList().add(cmd);
+
+            commandSender.sendMessage(commandItem.getCommandList().toString());
+
             commandItemService.modifyCommandItem(strings[1], commandItem);
 
         }

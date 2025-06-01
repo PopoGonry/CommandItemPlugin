@@ -44,7 +44,10 @@ public class CommandItemGUI {
             List<String> lore = new ArrayList<>();
 
             lore.add(ChatColor.GOLD + "이름: " + commandItem.getName());
-            lore.add(ChatColor.GOLD + "명령어: " + commandItem.getCommand());
+            lore.add(ChatColor.GOLD + "명령어: ");
+            for (String s : commandItem.getCommandList()) {
+                lore.add(ChatColor.GOLD + " - " + s);
+            }
 
             lore.add(ChatColor.WHITE + "---------------------");
             lore.add(ChatColor.GOLD + "- 좌클릭: 커맨드 아이템 지급");
@@ -59,6 +62,7 @@ public class CommandItemGUI {
         // 48 49 50
         int maxPage = commandItemNameList.size() / 45;
         maxPage += commandItemNameList.size() % 45 == 0 ? 0 : 1;
+        maxPage += maxPage == 0 ? 1 : 0;
 
         inventory.setItem(49, GUI.getCustomItemStack(Material.EMERALD, Reference.prefix + "Page " + page + " / " + maxPage, Collections.singletonList(ChatColor.GOLD + "Amount of CommandItem: " + (commandItemNameList.size() - continueNumber))));
 
