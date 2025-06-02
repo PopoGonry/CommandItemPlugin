@@ -47,6 +47,11 @@ public class CommandItemKoreanCommand implements CommandExecutor {
                 String commandFromItemStack = commandItemService.getCommandFromItemStack(player.getItemInHand());
 
                 player.sendMessage(Reference.prefix_opMessage + commandFromItemStack + " : 입니다.");
+            } else if (strings[0].equalsIgnoreCase("로드")) {
+                CommandItemRepository commandItemRepository = new CommandItemRepository();
+                commandItemRepository.loadCommandItemSet();
+                commandItemRepository.loadAllCommandItem();
+                commandSender.sendMessage(Reference.prefix_opMessage + "커맨드아이템 전체를 불러왔습니다. (파일 -> 메모리)");
             }
         }
         else if(strings.length == 2) {
