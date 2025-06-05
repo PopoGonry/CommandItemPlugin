@@ -24,7 +24,6 @@ public class CommandItemGUI {
         Collections.sort(commandItemNameList);
 
         int continueNumber = 0;
-
         for (int i = 0 + (45*(page-1)); i < 45 + (45*(page-1)) && i < commandItemNameList.size(); i++) {
             CommandItem commandItem = CommandItemRepository.commandItemHashMap.get(commandItemNameList.get(i));
             if (commandItem == null) {

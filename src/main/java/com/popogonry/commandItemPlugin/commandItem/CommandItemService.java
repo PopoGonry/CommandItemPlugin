@@ -72,6 +72,7 @@ public class CommandItemService {
         sender.sendMessage(CommandItemRepository.commandItemSet.toString());
         HashMap<String, CommandItem> commandItemHashMap = CommandItemRepository.commandItemHashMap;
         for (CommandItem commandItem : commandItemHashMap.values()) {
+            if(commandItem == null) continue;
             sender.sendMessage(commandItem.toKoreanString());
         }
     }

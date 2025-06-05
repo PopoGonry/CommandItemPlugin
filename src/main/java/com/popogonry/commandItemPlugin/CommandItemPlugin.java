@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public final class CommandItemPlugin extends JavaPlugin {
     private static CommandItemPlugin serverInstance;
     @Override
@@ -20,7 +22,6 @@ public final class CommandItemPlugin extends JavaPlugin {
 
         getServer().getPluginCommand("ci").setExecutor(new CommandItemCommand());
         getServer().getPluginCommand("커맨드아이템").setExecutor(new CommandItemKoreanCommand());
-
 
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "CommandItem Data Load Start...");
         CommandItemRepository commandItemRepository = new CommandItemRepository();

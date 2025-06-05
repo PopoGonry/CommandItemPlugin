@@ -48,6 +48,11 @@ public class CommandItemCommand implements CommandExecutor {
 
                 player.sendMessage(Reference.prefix_opMessage + commandFromItemStack + " : 입니다.");
             }
+            else if (strings[0].equalsIgnoreCase("test")) {
+                for (int i = 0; i < 100; i++) {
+                    commandItemService.createCommandItem(new CommandItem("test" + i, Collections.emptyList(), null));
+                }
+            }
 //            else if (strings[0].equalsIgnoreCase("storeAll")) {
 //                killEffectRepository.storeKillEffectSet();
 //                killEffectRepository.storeAllKillEffects();

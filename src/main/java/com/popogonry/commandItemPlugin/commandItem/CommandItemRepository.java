@@ -42,8 +42,11 @@ public class CommandItemRepository {
     public void saveCommandItem(String commandItemName) {
         commandItemDataConfig.storeCommandItemData(commandItemHashMap.get(commandItemName));
     }
-    public void loadCommandItem(String commandItemName) {
-        commandItemHashMap.put(commandItemName, commandItemDataConfig.loadCommandItemData(commandItemName));
+    public boolean loadCommandItem(String commandItemName) {
+        CommandItem commandItem = commandItemDataConfig.loadCommandItemData(commandItemName);
+        if(commandItem == null) return false;
+        commandItemHashMap.put(commandItemName, commandItem);
+        return true;
     }
     public void removeCommandItem(String commandItemName) {
         commandItemDataConfig.removeCommandItemData(commandItemName);
@@ -59,8 +62,9 @@ public class CommandItemRepository {
         }
     }
     public void loadAllCommandItem() {
-        for (String commandItemName : commandItemSet) {
-            loadCommandItem(commandItemName);
+        HashSet<String> set = new HashSet<>(commandItemSet);
+        for (String commandItemName : set) {
+            if(!loadCommandItem(commandItemName)) commandItemSet.remove(commandItemName);
         }
     }
     public void storeCommandItemSet() {
